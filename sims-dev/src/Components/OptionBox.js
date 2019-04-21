@@ -21,6 +21,7 @@ class OptionBox extends Component{
 
                     optboxes[i].className = cls.replace(active,"");
                     optboxes[i].parentNode.className = p_cls.replace(p_active,"");
+                    console.log(optboxes[i].parentNode.className);
                 }
                 optVals.push( {
                     "key" : optboxes[i].value,

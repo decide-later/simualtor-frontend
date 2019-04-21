@@ -7,9 +7,10 @@ class ImageCaption extends Component{
     }
     renderImageCaption = () => {
         try {
-            if(this.props.data.value ){
-                var m = img_dir + this.props.data.value+ ".png";
-                return <img src={m} alt={this.props.data.value} className="img-fluid"/>;
+            if(this.props.data.image.value ){
+                console.log(this.props.data.image.value);
+                var m = img_dir + this.props.data.image.value+ ".png";
+                return <img src={m} alt={this.props.data.text.value} className="img-fluid"/>;
             }
         } catch (ex) {
             //console.log(ex);
