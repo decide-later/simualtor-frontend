@@ -1,41 +1,30 @@
 import React, { Component } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faMusic} from '@fortawesome/free-solid-svg-icons'
 
-class Music extends React.Component {
+
+class Music extends Component {
     constructor(props) {
     super(props);
     this.state = {
-
-      play: false,
-      pause: true
+      play: true,
+      pause: false
 
     };
     this.url = "http://streaming.tdiradio.com:8000/house.mp3";
     this.audio = new Audio(this.url);
-    this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
   }
-
-  play(){
-    this.setState({
-      play: true,
-      pause: false
-    });
-    console.log(this.audio);
-    this.audio.play();
-  }
-
   pause(){
-  this.setState({ play: false, pause: true });
-    this.audio.pause();
+    let isPlaying = this.state.play
+    this.setState({ play: !isPlaying },() => {
+        (isPlaying) ? this.audio.pause() : this.audio.play();
+    });
   }
 
   render() {
-
-  return (
-    <div>
-      <button onClick={this.play}>Play</button>
-      <button onClick={this.pause}>Pause</button>
-    </div>
+    return (
+        <FontAwesomeIcon icon={faMusic} onClick={this.pause} />
     );
   }
 }

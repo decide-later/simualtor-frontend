@@ -33,14 +33,8 @@ class App extends Component {
   }
   render() {
     return (
-      <div className={this.state.themes[this.state.current_theme]} >
-  
-        <div className="">
-          { /*swithcing themes, beauty todo */
-            /*this.themeSwitcher()*/}
-        </div>
+      <div className="container-fluid" >
         <Main/>
-
       </div>
     );
   }

@@ -3,8 +3,10 @@ import API from "../Helpers/API"
 import ActionCard from "../Components/ActionCard";
 import ProgressTab from "../Components/ProgressTab";
 import ViewQuestion from "./ViewQuestion";
-import Music from "../Music";
 import Errors from "../Helpers/errors"
+import Label from "../Components/Label";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faHome, faForward, faBackward} from '@fortawesome/free-solid-svg-icons';
 
 
 class Main extends Component {
@@ -12,6 +14,7 @@ class Main extends Component {
         super (props);
         this.state = {
             viewdata : {}, //view data to be used in the template
+            profile: false,
             view : "main", //the current view
             level: -1, //the current level in the graph
             history: [],
@@ -24,9 +27,25 @@ class Main extends Component {
                 rating: {}
             },
             response: {},
+            user: {
+                names: {
+                    value : "псеудоном"
+                },
+                avatar : {
+                    type : "image",
+                    text : {
+                        value : "ПС"
+                    },
+                    image : {
+                        value: "avatar",
+                    }
+                }
+            },
+            bg : "default"
         }
         this.actionInit = this.actionInit.bind(this);
         this.answerOnClick = this.answerOnClick.bind(this);
+        this.goToProfile = this.goToProfile.bind(this);
     }
     componentWillMount(){
         this.actionInit(this.state.view);
@@ -105,27 +124,37 @@ class Main extends Component {
     }
     getNavButtons = () => {
         return [
-            <button key="nav_back" className="" onClick={()=>{this.navAction(-1)}}>назад</button>,
-            <button key="nav_home" className="" onClick={()=>{this.navAction(0)}}>дома</button>,
-            <button key="nav_fwd" className="" onClick={()=>{this.navAction(1)}}>перед</button>
+            <button key="nav_back" className="" onClick={()=>{this.navAction(-1)}}>
+                <FontAwesomeIcon icon={faBackward}  />
+            </button>,
+            <button key="nav_home" className="" onClick={()=>{this.navAction(0)}}>
+                <FontAwesomeIcon icon={faHome}  />
+            </button>,
+            <button key="nav_fwd" className="" onClick={()=>{this.navAction(1)}}><FontAwesomeIcon icon={faForward}  /></button>
         ]
     }
     profileView(){
-
+        return (
+            <div className="row mt-3">
+                <div className="col-6">
+                    {Label(this.state.user.avatar)} 
+                </div>
+                <div className="col-6">
+                    {Label(this.state.user.names)}                    
+                </div>
+            </div>
+        )
     }
     goToProfile (){
         this.setState({
-            view: "profile"
+            profile: !this.state.profile
         })
     }
-    goToGame () {
-        let l = this.state.history.length;
-        let lastView = l? this.state.history[l-1].view : "main";
-        this.state({
-            view: lastView
-        })
-    }
+    renderBg(){
+        document.body.classList = this.state.bg;
+    }   
     render () {
+        this.renderBg();
         return (
             <div className="">
                 <div className="border-bottom pb-1">
@@ -133,24 +162,23 @@ class Main extends Component {
                         stars={this.state.scores.stars}  
                         money={this.state.scores.money}
                         health={this.state.scores.health}
-                        goToProfile={this.state.view!=="profile" &&this.goToProfile}
-                        goToGame={this.state.view==="profile" &&this.gotToGame}
+                        goToProfile={!this.state.profile &&this.goToProfile}
+                        goToGame={this.goToProfile}
                     />
                 </div>
                 <div className="">
                     {
-                        (this.state.view==="profile" && this.profileView())
+                        (this.state.profile && this.profileView())
                         ||  
                         (this.state.view==="main" &&this.getActionCards())
                         || this.stageView()
                     } 
                 </div> 
-                <div className="mt-1 border-top row fix-bottom fix-full-x pb-1">
+                <div className="mt-1 border-top row fix-bottom fix-full-x pt-1 pb-1">
                     {
                         this.state.view !=="main" && this.getNavButtons()
                     }
-                </div> 
-                <Music/>   
+                </div>                    
             </div>
         )
     }

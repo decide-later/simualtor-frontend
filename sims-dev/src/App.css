@@ -1,3 +1,9 @@
+body.default{
+  background-image: url("images/bgs/default.png");
+  background-position: top right;
+  background-size: cover;
+  
+}
 .App {
   height: 100%;
   width: 100%;
@@ -19,12 +25,15 @@ div#root{
   top: 0;
   z-index: 999999;
 }
-.App.light, .info-box{
+body.light, .info-box{
   background: #ffffff;
 }
-.App.mojave, .App .mojave, .mojave .info-box{
+body.mojave, body .mojave, .mojave .info-box{
   background-color: #081B33;
-  color: #767D92;
+  color: #ffffff;
+}
+.mojave *{
+  color: #ffffff !important;
 }
 .App.charcoal, .App .charcoal {
   background-color: #353C51;
@@ -44,7 +53,7 @@ button{
   padding: 0.3rem 1rem;
   border-width: 1px;
   border-style: solid;
-  background: none;
+  background: whitesmoke;
 }
 button.action-card{
   border-radius: 0rem;
@@ -144,6 +153,8 @@ div.chart-area{
 }
 .active_choice{
   border: #081B33 solid 1px;
+  border-radius: 3em;
+  background-color: #353C51;
 }
 .fix-bottom{
   position: fixed;
@@ -155,7 +166,8 @@ div.chart-area{
   left: 0px;
 }
 .img-fluid{
-  max-width: 60%;
+  min-width: 4em;
+  max-width: 4em;
   height: auto;
 }
 .d-block{
@@ -207,6 +219,21 @@ div.chart-area{
 .col-4{
   width: 33%;
 }
+.col-6{
+  width: 50%;
+}
 .col-3{
   width: 25%;
+}
+
+.form-control:focus {
+  border-color: #ffffff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.form-control{
+  height: calc(2.78rem + 2px);
+  border-width: 1px;
+  border-color: rgba(135, 185, 241, 0.2);
+  border-radius: 2px;
+  background: transparent;
 }

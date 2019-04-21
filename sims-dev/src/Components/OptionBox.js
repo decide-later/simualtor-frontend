@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import Label from "./Label"
+const replaceAll = function(target, search, replacement) {
+    return target.split(search).join(replacement);
+};
 
 class OptionBox extends Component{
-    constructor(props){
-        super(props);
-    }
     onChangevalue = (e) => {        
         let optboxes = document.querySelectorAll("input.optbox");
         let optVals = [];
@@ -19,9 +19,8 @@ class OptionBox extends Component{
                     let cls = optboxes[i].className;
                     let p_cls = optboxes[i].parentNode.className;
 
-                    optboxes[i].className = cls.replace(active,"");
-                    optboxes[i].parentNode.className = p_cls.replace(p_active,"");
-                    console.log(optboxes[i].parentNode.className);
+                    optboxes[i].className = replaceAll(cls,active,"");
+                    optboxes[i].parentNode.className = replaceAll(p_cls,p_active,"");
                 }
                 optVals.push( {
                     "key" : optboxes[i].value,
@@ -40,7 +39,7 @@ class OptionBox extends Component{
 
         for(var val in opts){
             options.push(
-                <div className="px-1 py-1" key={"optbx_container"+val} >  
+                <div className="px-1 py-1 col-4" key={"optbx_container"+val} >  
                     <label 
                         className=""
                         htmlFor={"optbx_"+val}
@@ -65,7 +64,7 @@ class OptionBox extends Component{
     }
     render () {
         return (
-            <div className="d-inline-block">
+            <div className="row">
                 {
                     this.renderOptionBoxes()
                 }

@@ -44,7 +44,7 @@ class MapPickerOption extends Component {
             let marker = this.state.marker;
             marker.lat = i.lat;
             marker.lng = i.lng;
-            if(!data.results.length){
+            if(!data.results){
                 return;
             }
             marker.location = data.results[0].formatted_address;
@@ -63,7 +63,13 @@ class MapPickerOption extends Component {
     }
     renderMap = () => {
         return (
+
+            [
+            <h4 className="" key="title">
+                {this.state.location || <span> &nbsp; </span>}
+            </h4>,
             <GoogleMapReact
+                key="map"
                 bootstrapURLKeys={{ 
                     key: keys.google.key,
                     language: "ru"
@@ -73,7 +79,7 @@ class MapPickerOption extends Component {
                 onClick={this.handleClick}
                 >
                 {this.state.marker.lat && this.renderMarker()}
-            </GoogleMapReact>
+            </GoogleMapReact>]
         )
     }
 
