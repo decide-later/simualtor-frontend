@@ -39,9 +39,11 @@ class Main extends Component {
                     image : {
                         value: "avatar",
                     }
-                }
+                },
+                age : 16
             },
-            bg : "default"
+            bg : "default",
+            error : ""
         }
         this.actionInit = this.actionInit.bind(this);
         this.answerOnClick = this.answerOnClick.bind(this);
@@ -70,13 +72,16 @@ class Main extends Component {
                 viewdata: data,
                 view: i,
                 level : level,
-                //age : 
+                age : this.state.age
             })
         })
     }
     answerOnClick = (res) => {
+        let scores = this.state.scores;
+        scores.money = scores.money - (res.cost || 0);
         this.setState({
-            response: res
+            response: res,
+            scores : scores
         }, ()=>{
             console.log(res)
         });
@@ -93,7 +98,7 @@ class Main extends Component {
         for(var key in data){
             actionCards.push(
                 <ActionCard
-                    className=""
+                    className="col-12 py-1 fix-full-x"
                     key={key}
                     view={key}
                     caption={data[key]}
@@ -104,7 +109,9 @@ class Main extends Component {
         return actionCards
     }
     alertError = (key) => {
-
+        this.setState({
+            error: Errors[key]
+        })
     }
     navAction = (step) => {
         if(step > 0){
@@ -157,7 +164,10 @@ class Main extends Component {
         this.renderBg();
         return (
             <div className="">
-                <div className="border-bottom pb-1">
+                <div className="error_box">
+                    {this.state.error}
+                </div>
+                <div className="border-bottom pb-1 fix-top fix-full-x bg-white">
                     <ProgressTab 
                         stars={this.state.scores.stars}  
                         money={this.state.scores.money}
@@ -166,7 +176,7 @@ class Main extends Component {
                         goToGame={this.goToProfile}
                     />
                 </div>
-                <div className="">
+                <div className="mt-5">
                     {
                         (this.state.profile && this.profileView())
                         ||  
@@ -174,11 +184,13 @@ class Main extends Component {
                         || this.stageView()
                     } 
                 </div> 
-                <div className="mt-1 border-top row fix-bottom fix-full-x pt-1 pb-1">
-                    {
-                        this.state.view !=="main" && this.getNavButtons()
-                    }
-                </div>                    
+                {
+                        this.state.view !=="main" &&
+                            <div className="mt-1 border-top row fix-bottom fix-full-x pt-1 pb-1 bg-white">
+                                {this.getNavButtons()}
+                            </div>                    
+                }
+
             </div>
         )
     }

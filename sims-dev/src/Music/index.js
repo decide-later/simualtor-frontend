@@ -9,11 +9,13 @@ class Music extends Component {
     this.state = {
       play: true,
       pause: false
-
     };
     this.url = "http://streaming.tdiradio.com:8000/house.mp3";
     this.audio = new Audio(this.url);
     this.pause = this.pause.bind(this);
+  }
+  componentDidMount(){
+      this.audio.play();
   }
   pause(){
     let isPlaying = this.state.play

@@ -50,7 +50,7 @@ class MapPickerOption extends Component {
             marker.location = data.results[0].formatted_address;
 
             this.setState(marker,() => this.props.onClick({
-                response: marker.location}))
+                response: marker.location, cost : Math.floor(Math.random() * 10000)}))
         });
         
     }

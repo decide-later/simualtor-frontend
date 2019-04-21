@@ -28,6 +28,9 @@ div#root{
 body.light, .info-box{
   background: #ffffff;
 }
+.bg-white{
+  background: #ffffff !important;
+}
 body.mojave, body .mojave, .mojave .info-box{
   background-color: #081B33;
   color: #ffffff;
@@ -161,6 +164,11 @@ div.chart-area{
   bottom: 0px;
   z-index: 10000;
 }
+.fix-top{
+  position: fixed;
+  top: 0px;
+  z-index: 10000;
+}
 .fix-full-x{
   right: 0px;
   left: 0px;
@@ -213,6 +221,9 @@ div.chart-area{
   }
   button{
     margin: .1rem;
+  }
+  .action-card{
+    width: 98%;
   }
 }
 
