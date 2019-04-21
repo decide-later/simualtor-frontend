@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import MapPickerOption from "../Components/MapPickerOption";
-import CheckBox from "../Components/Option";
+import OptionBox from "../Components/OptionBox";
 import Text from "../Components/Text"
 
 class ViewQuestion extends Component{
@@ -13,13 +13,13 @@ class ViewQuestion extends Component{
     }
     renderQuestion(data){
         //data.question.question
-        if(data.question){
+        if(data && data.question){
             return data.question.question;
         }
         return "";
     }
     renderAnswerPrompt(data){
-        if(data.question){
+        if(data && data.question){
             switch(data.question.component){
                 case "map_picker": 
                     return <MapPickerOption
@@ -28,13 +28,13 @@ class ViewQuestion extends Component{
                         />;
                 case "radio":
                 case "checkbox":
-                    return <CheckBox
+                    return <OptionBox
                         onClick={this.props.onClick}
                         data={data}
                     />;
                 default:
                 return <Text
-                        onClick={this.props.onClick}
+                        onChange={this.props.onClick}
                         data={data}
                     />;
             }

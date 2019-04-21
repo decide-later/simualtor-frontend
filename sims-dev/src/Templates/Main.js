@@ -3,7 +3,8 @@ import API from "../Helpers/API"
 import ActionCard from "../Components/ActionCard";
 import ProgressTab from "../Components/ProgressTab";
 import ViewQuestion from "./ViewQuestion";
-import keys from "../Helpers/keys";
+import Music from "../Music";
+import Errors from "../Helpers/errors"
 
 
 class Main extends Component {
@@ -11,9 +12,18 @@ class Main extends Component {
         super (props);
         this.state = {
             viewdata : {}, //view data to be used in the template
-            view : "mobile_travel", //the current view
+            view : "main", //the current view
             level: -1, //the current level in the graph
-            history: []
+            history: [],
+            scores: {
+                health : 100,
+                money : 10000,
+                stars: 0,
+                success: {},
+                statistics: {},
+                rating: {}
+            },
+            response: {},
         }
         this.actionInit = this.actionInit.bind(this);
         this.answerOnClick = this.answerOnClick.bind(this);
@@ -30,35 +40,33 @@ class Main extends Component {
 
         let form = {
             body : {
+                "view" : i,
+                "level" : level
             },
-            method: 'GET',
-            endpoint: i
+            method: 'GET'
         }
         let res = API(form);
         res.then((data) => {
             this.setState({
                 viewdata: data,
                 view: i,
-                level : level
+                level : level,
+                //age : 
             })
         })
     }
-    answerOnClick = (e) => {
-        if(e.lng && e.lat){//map response
-            let revLookup = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+e.lat+","+e.lng+"&location_type=ROOFTOP&result_type=street_address&key="+keys.google;
-            console.log(revLookup);
-        }else{
-            console.log(e)
-        }
+    answerOnClick = (res) => {
+        this.setState({
+            response: res
+        }, ()=>{
+            console.log(res)
+        });
     }
     stageView = () => {
         return <ViewQuestion 
             viewdata = {this.state.viewdata}
             onClick={this.answerOnClick}
         />;
-    }
-    answerQuestion = () =>{
-
     }
     getActionCards = () =>{
         let actionCards = [];
@@ -76,9 +84,16 @@ class Main extends Component {
         }
         return actionCards
     }
+    alertError = (key) => {
+
+    }
     navAction = (step) => {
         if(step > 0){
-            this.actionInit(this.state.view); //stacking level with same
+            if(Object.keys(this.state.response).length){
+                this.actionInit(this.state.view); //stacking level with same
+            }else{ //error, no response from user
+                this.alertError("no_response")
+            }
             return;
         }
         const l = this.state.history.length;
@@ -95,16 +110,38 @@ class Main extends Component {
             <button key="nav_fwd" className="" onClick={()=>{this.navAction(1)}}>перед</button>
         ]
     }
+    profileView(){
+
+    }
+    goToProfile (){
+        this.setState({
+            view: "profile"
+        })
+    }
+    goToGame () {
+        let l = this.state.history.length;
+        let lastView = l? this.state.history[l-1].view : "main";
+        this.state({
+            view: lastView
+        })
+    }
     render () {
-        //console.log(this.state)
         return (
             <div className="">
                 <div className="border-bottom pb-1">
-                    <ProgressTab />
+                    <ProgressTab 
+                        stars={this.state.scores.stars}  
+                        money={this.state.scores.money}
+                        health={this.state.scores.health}
+                        goToProfile={this.state.view!=="profile" &&this.goToProfile}
+                        goToGame={this.state.view==="profile" &&this.gotToGame}
+                    />
                 </div>
                 <div className="">
                     {
-                        (this.state.view==="main" && this.getActionCards())
+                        (this.state.view==="profile" && this.profileView())
+                        ||  
+                        (this.state.view==="main" &&this.getActionCards())
                         || this.stageView()
                     } 
                 </div> 
@@ -112,8 +149,8 @@ class Main extends Component {
                     {
                         this.state.view !=="main" && this.getNavButtons()
                     }
-                </div>     
-                     
+                </div> 
+                <Music/>   
             </div>
         )
     }
